@@ -5,7 +5,7 @@ SG_ID="sg-092003eb4d02ae0a1"
 
 for instance in $@
 do
-    instance_id=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security-group-ids $SG_ID --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]' --query 'Instances[0].InstanceId' --output tex)
+    instance_id=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security-group-ids $SG_ID --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=$instance}]' --query 'Instances[0].InstanceId' --output text)
 
     #### get the private ip of the instance
     if [ $instance != "frantend" ] ; then
