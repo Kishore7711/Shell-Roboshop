@@ -39,6 +39,3 @@ VALIDATE(){
 
   systemctl start mongod &>>$LOGS_FILE
   VALIDATE $? "Starting Mongodb"
-
-
-
