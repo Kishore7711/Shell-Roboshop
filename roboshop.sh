@@ -15,5 +15,5 @@ do
 
     fi
 
-    echo "$instance : $IP"
+    echo "$instance: $IP"
 done
