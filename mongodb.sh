@@ -7,7 +7,7 @@ Y="\e[33m"
 N="\e[0m"  #### N for Normal Color
 
 LOGS_FOLDER="/var/log/Shell-Roboshop"
-SCRIPT_NAME=$(echo "mongodb.sh" | cut -d "." -f1)
+SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"  ### /var/log/Shell-Roboshop/mongodb.log
 
 mkdir -p $LOGS_FOLDER
