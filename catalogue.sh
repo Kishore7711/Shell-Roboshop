@@ -10,6 +10,7 @@ N="\e[0m"  #### N for Normal Color
 
 LOGS_FOLDER="/var/log/Shell-Roboshop"
 SCRIPT_NAME=$( echo $0| cut -d "." -f1 )
+SCRIPT_DIR=$PWD    ### Current PATH where the script is running
 MONGODB_HOST="mongodb.devopscloud.tech"
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"  ### /var/log/Shell-Roboshop/mongodb.log
 
@@ -61,7 +62,7 @@ VALIDATE(){
     npm install &>>$LOGS_FILE
     VALIDATE $? "Installing Nodejs Dependencies"
 
-    cp catalogue.service /etc/systemd/system/catalogue.service
+    cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
     VALIDATE $? "Copying Catalogue SystemD Service File"
 
     systemctl daemon-reload
