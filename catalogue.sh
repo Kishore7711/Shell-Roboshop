@@ -86,8 +86,14 @@ VALIDATE(){
     dnf install mongodb-mongosh -y &>>$LOGS_FILE
     VALIDATE $? "Installing Mongodb Client"
 
-    mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOGS_FILE
-    VALIDATE $? "Loading Catalogue Schema ( Load Catalogue Products )"
+    INDEX=$(mongosh mongodb.devopscloud.tech --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
+    if [INDEX -le 0 ]; then
+        mongosh --host $MONGODB_HOST </app/db/master-data.js &>>$LOGS_FILE
+        VALIDATE $? "Loading Catalogue Schema ( Load Catalogue Products )"
+    else
+        echo -e "Catalogue Products Already Loaded .... $Y SKIPPED $N"
+    fi
+
 
     systemctl restart catalogue
     VALIDATE $? "Starting Catalogue Service"
