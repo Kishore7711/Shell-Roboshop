@@ -62,6 +62,9 @@ VALIDATE(){
     cd /app
     VALIDATE $? "Changing to App Directory"
 
+    rm -rf /app/*
+    VALIDATE $? "Removing Old App Content"
+
     unzip /tmp/catalogue.zip &>>$LOGS_FILE
     VALIDATE $? "Extracting Catalogue App Content"
 
