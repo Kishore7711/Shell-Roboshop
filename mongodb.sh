@@ -43,3 +43,9 @@ VALIDATE(){
 
   systemctl start mongod &>>$LOGS_FILE
   VALIDATE $? "Starting Mongodb"
+
+  sed -i s/127.0.0.1/0.0.0.0/g /etc/mongod.conf
+  VALIDATE $? "Allowing Mongodb to listen on all IPs... (Remote Connections..)"
+
+  systemctl restart mongod &>>$LOGS_FILE
+  VALIDATE $? "Restarting Mongodb"
