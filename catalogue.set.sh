@@ -2,7 +2,7 @@
 
 #### SCRIPT_NAME=$( echo "catalogue.sh"| cut -d "." -f1 )
 
-set -euo pipefail
+set -e pipefail
 
 trap 'echo "There is an Error in $LINENO, Command is : $BASH_COMMAND"' ERR
 
