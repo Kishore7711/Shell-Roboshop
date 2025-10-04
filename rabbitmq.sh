@@ -33,16 +33,16 @@ VALIDATE(){
     fi
          }
 
-  cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
+  cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>>$LOGS_FILE
   VALIDATE $? "Adding RabbitMQ Repo"
 
-  dnf install rabbitmq-server -y
+  dnf install rabbitmq-server -y  &>>$LOGS_FILE
   VALIDATE $? "Installing RebbitMQ"
 
-  systemctl enable rabbitmq-server
+  systemctl enable rabbitmq-server  &>>$LOGS_FILE
   VALIDATE $? "Enableing Rabitmq"
 
-  systemctl start rabbitmq-server
+  systemctl start rabbitmq-server  &>>$LOGS_FILE
   VALIDATE $? "Starting RabitMQ"
 
   rabbitmqctl add_user roboshop roboshop123
