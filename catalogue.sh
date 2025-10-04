@@ -94,6 +94,5 @@ VALIDATE(){
         echo -e "Catalogue Products Already Loaded .... $Y SKIPPED $N"
     fi
 
-
     systemctl restart catalogue
     VALIDATE $? "Starting Catalogue Service"
