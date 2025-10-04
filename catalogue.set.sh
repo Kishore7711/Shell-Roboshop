@@ -73,4 +73,4 @@ fi
         echo -e "Catalogue Products Already Loaded .... $Y SKIPPED $N"
     fi
 
-    systemctl restart cataloguekk
+    systemctl restart catalogue
