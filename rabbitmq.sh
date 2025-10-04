@@ -33,7 +33,7 @@ VALIDATE(){
     fi
          }
 
-  cp $SCRIPT_DIR/rabbinmq.repo /etc/yum.repos.d/rabbitmq.repo
+  cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
   VALIDATE $? "Adding RebbitMQ Repo"
 
   dnf install rabbitmq-server -y
@@ -48,8 +48,6 @@ VALIDATE(){
   rabbitmqctl add_user roboshop roboshop123
   rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
   VALIDATE $? "Setting up Permissions"
-
-
 
 END_TIME=$(date +%s)
 TOTAL_TIME=$(( $END_TIME - $START_TIME ))
