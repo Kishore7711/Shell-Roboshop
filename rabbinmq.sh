@@ -12,6 +12,7 @@ LOGS_FOLDER="/var/log/Shell-Roboshop"
 SCRIPT_NAME=$( echo "mongodb.sh"| cut -d "." -f1 )
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"  ### /var/log/Shell-Roboshop/mongodb.log
 START_TIME=$(date +%s)
+SCRIPT_DIR=$(PWD)
 
 mkdir -p $LOGS_FOLDER
 echo "Script Exectution Started at : $(date)" | tee -a $LOGS_FILE
@@ -32,18 +33,22 @@ VALIDATE(){
     fi
          }
 
-    
-dnf install mysql-server -y &>>$LOGS_FILE
-VALIDATE $? "Installing MySql Server"
+  cp $SCRIPT_DIR/rabbinmq.repo /etc/yum.repos.d/rabbitmq.repo
+  VALIDATE $? "Adding RebbitMQ Repo"
 
-systemctl enable mysqld  &>>$LOGS_FILE
-VALIDATE $? "Enableing MySqld"
+  dnf install rabbitmq-server -y
+  VALIDATE $? "Installing RebbitMQ"
 
-systemctl start mysqld &>>$LOGS_FILE
-VALIDATE $? "Starting MySqld"
+  systemctl enable rabbitmq-server
+  VALIDATE $? "Enableing Rabitmq"
 
-mysql_secure_installation --set-root-pass RoboShop@1 &>>$LOGS_FILE
-VALIDATE $? "Setting up Root Passwd"
+  systemctl start rabbitmq-server
+  VALIDATE $? "Starting RabitMQ"
+
+  rabbitmqctl add_user roboshop roboshop123
+  rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+  VALIDATE $? "Setting up Permissions"
+
 
 
 END_TIME=$(date +%s)
