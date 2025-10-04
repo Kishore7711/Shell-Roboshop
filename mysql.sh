@@ -34,8 +34,18 @@ VALIDATE(){
 
     
 dnf install mysql-server -y
+VALIDATE $? "Installing MySql Server"
 
 systemctl enable mysqld
+VALIDATE $? "Enableing MySqld"
 
 systemctl start mysqld
+VALIDATE $? "Starting MySqld"
 
+mysql_secure_installation --set-root-pass RoboShop@1
+VALIDATE $? "Setting up Root Passwd"
+
+
+END_TIME=$(date +%s)
+TOTAL_TIME=$(( $END_TIME - $START_TIME ))
+echo  -e "Script Executed in $Y $TOTAL_TIME seconds $N"
