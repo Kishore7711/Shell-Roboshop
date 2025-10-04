@@ -12,7 +12,7 @@ LOGS_FOLDER="/var/log/Shell-Roboshop"
 SCRIPT_NAME=$( echo "mongodb.sh"| cut -d "." -f1 )
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"  ### /var/log/Shell-Roboshop/mongodb.log
 START_TIME=$(date +%s)
-SCRIPT_DIR=$(PWD)
+SCRIPT_DIR=$($PWD)
 
 mkdir -p $LOGS_FOLDER
 echo "Script Exectution Started at : $(date)" | tee -a $LOGS_FILE
@@ -34,7 +34,7 @@ VALIDATE(){
          }
 
   cp $SCRIPT_DIR/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
-  VALIDATE $? "Adding RebbitMQ Repo"
+  VALIDATE $? "Adding RabbitMQ Repo"
 
   dnf install rabbitmq-server -y
   VALIDATE $? "Installing RebbitMQ"
