@@ -49,3 +49,12 @@ VALIDATE(){
 
   systemctl restart mongod &>>$LOGS_FILE
   VALIDATE $? "Restarting Mongodb"
+
+  systemctl ps -ef | grep mongo
+  VALIDATE $? "Mongodb service running"
+
+  systemctl status mongod &>>$LOGS_FILE
+  VALIDATE $? "Active the mongodb service"
+
+  systemctl netstat -nltp
+  VALIDATE $? "Mongodb port is open"
