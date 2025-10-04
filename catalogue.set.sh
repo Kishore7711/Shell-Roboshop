@@ -23,10 +23,10 @@ echo "Script Exectution Started at : $(date)" | tee -a $LOGS_FILE
 
 
 if [ $USERID -ne 0 ]; then
-    echo -e "$R ERROR:: $N Please run this script with $B ROOT Prilivages $N" | tee -a $LOGS_FILE
+    echo -e "$R ERROR:: $N Please run this script with $R ROOT Prilivages $N" | tee -a $LOGS_FILE
     exit 1
 else
-    echo -e "$G SUCCESS::: $N You have $B ROOT Prilivages.. Please Proceed.... $N" | tee -a $LOGS_FILE
+    echo -e "$G SUCCESS::: $N You have $G ROOT Prilivages.. Please Proceed.... $N" | tee -a $LOGS_FILE
 fi
     
     ### NodeJS ###
