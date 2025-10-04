@@ -5,6 +5,8 @@ SG_ID="sg-092003eb4d02ae0a1"
 ZONE_ID="Z0791786144CK16DT52TK"
 DOMAIN_NAME="devopscloud.tech"
 
+####### Instance Creation #######
+
 for instance in $@
 do
     INSTANCE_ID=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security-group-ids $SG_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
@@ -14,12 +16,16 @@ do
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)
         RECORD_NAME="$instance.$DOMAIN_NAME" #### mongodb.devopscloud.tech
     else
+
+    #### get the Public ip of the instance
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
         RECORD_NAME="$DOMAIN_NAME" #### devopscloud.tech
 
     fi
 
     echo "$instance: $IP"
+
+  ####### Records Creation or Updation at Route53 ######
 
 aws route53 change-resource-record-sets \
   --hosted-zone-id Z0791786144CK16DT52TK \
@@ -39,4 +45,5 @@ aws route53 change-resource-record-sets \
     }]
   }
   '
+  ####### Execution on Command line --- like this sh roboshop_Create_Instance.sh give the arguments like mongodb catalogue frontend etc...
 done
