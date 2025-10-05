@@ -82,5 +82,3 @@ VALIDATE(){
 
     systemctl restart user
     VALIDATE $? "Starting User Service"
-
-    cp $SCRIPT_DIR/user.service /etc/systemd/system/user.service
