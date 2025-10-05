@@ -34,7 +34,7 @@ VALIDATE(){
     fi
          }
 
-   dnf install maven -y  &>>$LOGS_FILE
+   dnf install python3 gcc python3-devel -y  &>>$LOGS_FILE
 
     id roboshop &>>$LOGS_FILE
     if [ $? -ne 0 ] ; then
@@ -47,8 +47,8 @@ VALIDATE(){
     mkdir -p /app
     VALIDATE $? "Creating App Directory"
 
-    curl -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip &>>$LOGS_FILE
-    VALIDATE $? "Downloading shipping App Content"
+    curl -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip &>>$LOGS_FILE
+    VALIDATE $? "Downloading payment App Content"
 
     cd /app
     VALIDATE $? "Changing to App Directory"
@@ -56,33 +56,19 @@ VALIDATE(){
     rm -rf /app/*
     VALIDATE $? "Removing Old App Content"
 
-    unzip /tmp/shipping.zip &>>$LOGS_FILE
-    VALIDATE $? "Extracting shipping App Content"
+    unzip /tmp/payment.zip &>>$LOGS_FILE
+    VALIDATE $? "Extracting payment App Content"
 
-    mvn clean package &>>$LOGS_FILE
+    pip3 install -r requirements.txt  &>>$LOGS_FILE
+    VALIDATE $? "Installing Requirement Dependecies"
 
-    mv target/shipping-1.0.jar shipping.jar  &>>$LOGS_FILE
-
-    cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service  &>>$LOGS_FILE
+    cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service  &>>$LOGS_FILE
+    VALIDATE $? "Coppying the Systemd service"
 
     systemctl daemon-reload
 
-    systemctl enable shipping  &>>$LOGS_FILE
+    systemctl enable payment  &>>$LOGS_FILE
+    VALIDATE $? "Enabling payment"
 
-    dnf install mysql -y  &>>$LOGS_FILE
-
-
-    mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e 'use cities'  &>>$LOGS_FILE
-    if [ $? -ne 0 ] ; then
-        mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql  &>>$LOGS_FILE
-        mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql  &>>$LOGS_FILE
-        mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/master-data.sql  &>>$LOGS_FILE
-    else
-        echo -e "Shipping data is already loaded... $Y SKIPPING.. $N"
-    fi
-
-  systemctl restart shipping
-
-
-
-
+    systemctl restart payment &>>$LOGS_FILE
+    VALIDATE $? "Restart Payment"
